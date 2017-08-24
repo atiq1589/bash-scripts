@@ -8,16 +8,24 @@ NC='\033[0m'
 echo -n Sudo Password: 
 read -s password
 echo
-update_repository(){
-    echo $password | sudo -S apt-get update
+
+sudo_command(){
+    echo $password | sudo -S $*
 }
+
+update_repository(){
+   sudo_command apt-get update
+}
+
+
+
 # Run Command
 install(){
     echo -e "${BLUE}Now installing $1...${NC}"
     # echo  "${NC}"
     typeset ret_code
 
-    echo $password | sudo -S apt-get install $1 -y
+    sudo_command apt-get install $1 -y
     ret_code=$?
     if [ $ret_code != 0 ]; then
         echo -e "${RED}Error : [%d] when executing command: $1${NC}" $ret_code
@@ -121,7 +129,7 @@ install_pip(){
     install python-pip
 }
 install_virtualenv(){
-    echo $password | sudo -S pip install virtualenv
+   sudo_command pip install virtualenv
 }
 setup_db(){
     sudo -i -u postgres  psql -c "ALTER USER postgres PASSWORD '1234';"
@@ -148,7 +156,7 @@ install_postgresql(){
 
 }
 install_oh_my_zsh(){
-  echo $password |  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 }
 
 install_zsh(){
@@ -182,20 +190,20 @@ install_chrome(){
     install libappindicator1 
     install libindicator7
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    echo $password | sudo -S dpkg -i google-chrome*.deb
-    sudo -S apt-get install -f
+    sudo_command dpkg -i google-chrome*.deb
+    sudo_command apt-get install -f
     rm -rf google-chrome*.deb
 }
 
 install_skype(){
     wget https://go.skype.com/skypeforlinux-64.deb
-    echo $password | sudo -S dpkg -i skype*.deb
-    sudo -S apt-get install -f
+    sudo_command dpkg -i skype*.deb
+    sudo_command apt-get install -f
     rm -rf skype*.deb
 }
 
 install_java_8(){
-    echo $password | sudo -S apt-add-repository ppa:webupd8team/java
+    sudo_command apt-add-repository ppa:webupd8team/java
     update_repository
     install oracle-java8-installer
 }
