@@ -127,6 +127,7 @@ install_coffee_nonemon(){
 
 install_pip(){
     install python-pip
+    sudo_command pip install -U pip
 }
 install_virtualenv(){
    sudo_command pip install virtualenv
