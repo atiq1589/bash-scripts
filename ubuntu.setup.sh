@@ -194,9 +194,16 @@ install_skype(){
     rm -rf skype*.deb
 }
 
+install_java_8(){
+    echo $password | sudo -S apt-add-repository ppa:webupd8team/java
+    update_repository
+    install oracle-java8-installer
+}
+
 #Execute commands
 update_repository
 install_git
+install_java_8
 install_ruby
 install_xclip
 install_node_package
