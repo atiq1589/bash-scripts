@@ -52,6 +52,8 @@ setup_git_config(){
 
 install_git(){
     typeset ret_code
+    sudo_command add-apt-repository ppa:git-core/ppa
+    update_repository
     install git 
     ret_code=$?
     echo $ret_code
@@ -212,7 +214,7 @@ install_java_8(){
 #Execute commands
 update_repository
 install_git
-install_java_8
+#install_java_8
 install_ruby
 install_xclip
 install_node_package
