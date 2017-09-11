@@ -17,6 +17,10 @@ update_repository(){
    sudo_command apt-get update
 }
 
+upgrade_repository(){
+   sudo_command apt-get upgrade
+}
+
 
 
 # Run Command
@@ -189,13 +193,17 @@ install_visula_studio_code(){
 }
 
 install_chrome(){
-    install libxss1 
-    install libappindicator1 
-    install libindicator7
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo_command dpkg -i google-chrome*.deb
-    sudo_command apt-get install -f
-    rm -rf google-chrome*.deb
+    # install libxss1 
+    # install libappindicator1 
+    # install libindicator7
+    # wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    # sudo_command dpkg -i google-chrome*.deb
+    # sudo_command apt-get install -f
+    # rm -rf google-chrome*.deb
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
+    sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+    update_repository
+    sudo_command install google-chrome-stable
 }
 
 install_skype(){
@@ -234,4 +242,5 @@ install_support_library
 install_visula_studio_code
 install_chrome
 install_skype
+upgrade_repository
 install_zsh
